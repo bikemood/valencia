@@ -1,191 +1,217 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-<!-- Leaflet CSS -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-<style>
-  #map {
-    height: 400px;
-    margin: 2rem auto;
-    max-width: 900px;
-    border-radius: 8px;
-  }
-</style>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Valencia Tours - Bike, Tapas & Wine</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Valencia Tour Agency</title>
+
+  <!-- Leaflet per mappa -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <style>
+    :root {
+      --azzurro: #b3e5fc;
+      --rosa: #ffc1e3;
+      --bianco: #ffffff;
+    }
+
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
-      background: #fffaf3;
+      background: var(--bianco);
       color: #333;
     }
+
     header {
-      background-color: #ffb347;
-      color: white;
+      background-color: var(--azzurro);
       padding: 2rem;
       text-align: center;
     }
+
     header h1 {
-      margin: 0;
-      font-size: 2.5rem;
-    }
-    nav {
-      background-color: #ffcc70;
-      text-align: center;
-      padding: 0.8rem;
-    }
-    nav a {
-      margin: 0 1rem;
-      text-decoration: none;
       color: #333;
+      margin: 0;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      background: var(--rosa);
+      padding: 0.5rem;
+    }
+
+    nav button {
+      background: none;
+      border: none;
+      margin: 0 1rem;
+      font-size: 1rem;
       font-weight: bold;
+      cursor: pointer;
+      color: #333;
     }
-    section {
-      padding: 2rem;
-      max-width: 900px;
-      margin: auto;
+
+    #tour-container {
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 0 1rem;
     }
+
     .tour {
-      background-color: #fdf1dc;
+      display: none;
+      background: #f5f5f5;
       border-radius: 8px;
       padding: 1.5rem;
-      margin-bottom: 2rem;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      margin-bottom: 1.5rem;
     }
+
+    .tour.active {
+      display: block;
+    }
+
     .tour img {
       max-width: 100%;
-      border-radius: 6px;
       margin-top: 1rem;
+      border-radius: 6px;
     }
-    .tour h2 {
-      color: #ff7b00;
-      margin-top: 0;
+
+    #map {
+      height: 500px;
+      width: 100%;
+      margin-top: 2rem;
     }
-    footer {
-      text-align: center;
-      padding: 1rem;
-      background-color: #ffb347;
-      color: white;
-    }
+
     form {
-      background-color: #fff7e6;
-      border-radius: 8px;
+      background: var(--rosa);
       padding: 2rem;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      margin: 2rem auto;
+      border-radius: 8px;
+      max-width: 800px;
     }
+
     form input, form textarea {
       width: 100%;
       padding: 0.8rem;
       margin-bottom: 1rem;
       border: 1px solid #ccc;
       border-radius: 4px;
-      font-family: inherit;
     }
+
     form button {
-      background-color: #ff7b00;
-      color: white;
       padding: 0.8rem 1.5rem;
+      background-color: #ff69b4;
       border: none;
+      color: white;
+      font-weight: bold;
       border-radius: 4px;
       cursor: pointer;
     }
-    form button:hover {
-      background-color: #e66a00;
+
+    .lang-switch {
+      text-align: center;
+      margin-top: 1rem;
     }
-    @media (max-width: 600px) {
-      header h1 {
-        font-size: 1.8rem;
-      }
-      nav a {
-        display: block;
-        margin: 0.5rem 0;
-      }
+
+    .lang-switch button {
+      margin: 0 0.5rem;
+      background: var(--azzurro);
+      border: none;
+      padding: 0.5rem;
+      border-radius: 4px;
+      cursor: pointer;
     }
   </style>
 </head>
+
 <body>
-  <section>
-  <h2 style="text-align:center; color:#ff7b00;">🗺️ Mappa dei Tour</h2>
-  <div id="map"></div>
-</section>
-
-<!-- Leaflet JS -->
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-<script>
-  // Coordinate approssimative di Valencia
-  var map = L.map('map').setView([39.4699, -0.3763], 13);
-
-  // Mappa di base
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© OpenStreetMap',
-    maxZoom: 18,
-  }).addTo(map);
-
-  // Segnaposto per il Bike Tour
-  L.marker([39.4785, -0.3624]).addTo(map)
-    .bindPopup("<b>🚴‍♀️ Bike Tour</b><br>Itinerario tra Giardini del Turia, Città delle Arti e centro storico.");
-
-  // Segnaposto per il Tapas Tour
-  L.marker([39.4749, -0.3790]).addTo(map)
-    .bindPopup("<b>🍢 Tapas Tour</b><br>Degustazioni nei migliori bar del centro e mercato centrale.");
-
-  // Segnaposto per il Wine Tour
-  L.marker([39.4415, -0.4630]).addTo(map)
-    .bindPopup("<b>🍷 Wine Tour</b><br>Visita a cantina tradizionale e degustazione fuori città.");
-</script>
-
   <header>
-    <h1>Valencia Tours</h1>
-    <p>Bike • Tapas • Wine</p>
+    <h1 id="titolo">Valencia Tour Agency</h1>
+    <p id="sottotitolo">Bike, Tapas & Wine Experiences</p>
   </header>
 
   <nav>
-    <a href="#bike">Bike Tour</a>
-    <a href="#tapas">Tapas Tour</a>
-    <a href="#wine">Wine Tour</a>
-    <a href="#contatti">Contatti</a>
+    <button onclick="showTour('bike')">🚲 Bike Tour</button>
+    <button onclick="showTour('tapas')">🍢 Tapas Tour</button>
+    <button onclick="showTour('wine')">🍷 Wine Tour</button>
   </nav>
 
-  <section>
-    <div class="tour" id="bike">
-      <h2>🚴‍♀️ Bike Tour</h2>
-      <p>Scopri Valencia in bicicletta! Visiterai i luoghi più iconici della città, inclusi i Giardini del Turia, la Città delle Arti e delle Scienze, e il centro storico.</p>
-      <img src="https://images.unsplash.com/photo-1584215460803-fd14f237f9a9?auto=format&fit=crop&w=900&q=80" alt="Bike tour a Valencia">
+  <div class="lang-switch">
+    <button onclick="setLanguage('it')">🇮🇹</button>
+    <button onclick="setLanguage('es')">🇪🇸</button>
+    <button onclick="setLanguage('en')">🇬🇧</button>
+  </div>
+
+  <section id="tour-container">
+    <div id="bike" class="tour active">
+      <h2 class="tour-title" data-it="Bike Tour" data-es="Tour en bici" data-en="Bike Tour"></h2>
+      <p class="tour-desc" data-it="Scopri Valencia in bicicletta!" data-es="¡Descubre Valencia en bici!" data-en="Discover Valencia by bike!"></p>
+      <!-- Inserisci qui la tua immagine -->
+      <img src="immagini/bike.jpg" alt="Bike tour" />
+      <p><strong data-it="Prezzo" data-es="Precio" data-en="Price"></strong>: 30€<br><strong data-it="Disponibilità" data-es="Disponibilidad" data-en="Availability"></strong>: Tutti i giorni</p>
     </div>
 
-    <div class="tour" id="tapas">
-      <h2>🍢 Tapas Tour</h2>
-      <p>Assapora le migliori tapas valenciane con una guida locale. Un percorso gastronomico nei migliori bar e mercati della città vecchia.</p>
-      <img src="https://images.unsplash.com/photo-1603898942214-6b8dd026e3d3?auto=format&fit=crop&w=900&q=80" alt="Tapas tour a Valencia">
+    <div id="tapas" class="tour">
+      <h2 class="tour-title" data-it="Tapas Tour" data-es="Tour de tapas" data-en="Tapas Tour"></h2>
+      <p class="tour-desc" data-it="Gusta le migliori tapas di Valencia." data-es="Disfruta las mejores tapas de Valencia." data-en="Taste the best tapas in Valencia."></p>
+      <img src="immagini/tapas.jpg" alt="Tapas tour" />
+      <p><strong data-it="Prezzo" data-es="Precio" data-en="Price"></strong>: 35€<br><strong data-it="Disponibilità" data-es="Disponibilidad" data-en="Availability"></strong>: Mar - Sab</p>
     </div>
 
-    <div class="tour" id="wine">
-      <h2>🍷 Wine Tour</h2>
-      <p>Degustazione di vini locali in cantine tradizionali vicino a Valencia. Scopri i segreti del vino spagnolo con esperti del territorio.</p>
-      <img src="https://images.unsplash.com/photo-1604163293483-ef45014ec1ac?auto=format&fit=crop&w=900&q=80" alt="Wine tour vicino Valencia">
+    <div id="wine" class="tour">
+      <h2 class="tour-title" data-it="Wine Tour" data-es="Tour de vino" data-en="Wine Tour"></h2>
+      <p class="tour-desc" data-it="Visita cantine e degusta vini locali." data-es="Visita bodegas y degusta vinos locales." data-en="Visit wineries and taste local wines."></p>
+      <img src="immagini/wine.jpg" alt="Wine tour" />
+      <p><strong data-it="Prezzo" data-es="Precio" data-en="Price"></strong>: 50€<br><strong data-it="Disponibilità" data-es="Disponibilidad" data-en="Availability"></strong>: Solo weekend</p>
     </div>
   </section>
 
-  <section id="contatti">
-    <h2 style="text-align:center; color:#ff7b00;">📬 Contattaci</h2>
-    <form action="mailto:tuo@email.com" method="post" enctype="text/plain">
-      <label for="nome">Nome:</label>
-      <input type="text" id="nome" name="nome" required>
+  <div id="map"></div>
 
-      <label for="email">Email:</label>
-      <input type="email" id="email" name="email" required>
-
-      <label for="messaggio">Messaggio:</label>
-      <textarea id="messaggio" name="messaggio" rows="5" required></textarea>
-
+  <section>
+    <form action="bikemoodvlc.gmail.com" method="POST" enctype="text/plain">
+      <h2>📬 Contattaci</h2>
+      <input type="text" name="nome" placeholder="Nome" required />
+      <input type="email" name="email" placeholder="Email" required />
+      <textarea name="messaggio" rows="5" placeholder="Scrivici..." required></textarea>
       <button type="submit">Invia</button>
     </form>
   </section>
 
-  <footer>
-    <p>© 2025 Valencia Tours · Made with ❤️ in Spain</p>
+  <footer style="text-align:center; background:#f0f0f0; padding:1rem;">
+    <p>© 2025 Valencia Tour Agency</p>
+  </footer>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    // Mappa
+    const map = L.map('map').setView([39.4699, -0.3763], 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap'
+    }).addTo(map);
+
+    const markers = {
+      bike: L.marker([39.4785, -0.3624]).bindPopup("🚲 Bike Tour").addTo(map),
+      tapas: L.marker([39.4749, -0.3790]).bindPopup("🍢 Tapas Tour").addTo(map),
+      wine: L.marker([39.4415, -0.4630]).bindPopup("🍷 Wine Tour").addTo(map)
+    };
+
+    // Tour toggle
+    function showTour(id) {
+      document.querySelectorAll('.tour').forEach(t => t.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+
+    // Traduzione dinamica
+    function setLanguage(lang) {
+      document.querySelectorAll('[data-it]').forEach(el => {
+        el.innerText = el.dataset[lang];
+      });
+    }
+
+    // Default lingua italiano
+    setLanguage('it');
+  </script>
+</body>
+</html>
   </footer>
 
 </body>
